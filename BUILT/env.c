@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 20:28:00 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/18 15:14:03 by edvicair         ###   ########.fr       */
+/*   Updated: 2022/12/14 02:57:49 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,46 @@ char	*ft_getenv(t_msh *msh, char *namee)
 	}
 }
 
+void	ft_env_red(t_msh *msh, t_env *cpy)
+{
+	while (cpy->next != NULL)
+	{
+		if (!cpy->egal && cpy->value)
+		{
+			write(msh->out, cpy->name, ft_strlen(cpy->name));
+			write(msh->out, cpy->value, ft_strlen(cpy->value));
+			write(msh->out, "\n", 1);
+		}
+		else if (!cpy->egal && !cpy->value)
+		{
+			write(msh->out, cpy->name, ft_strlen(cpy->name));
+			write(msh->out, "=\n", 2);
+		}
+		cpy = cpy->next;
+	}
+	if (cpy->next == NULL && !cpy->egal && cpy->value)
+	{
+		write(msh->out, cpy->name, ft_strlen(cpy->name));
+		write(msh->out, cpy->value, ft_strlen(cpy->value));
+		write(msh->out, "\n", 1);
+	}
+	else if (cpy->next == NULL && !cpy->egal && !cpy->value)
+	{	
+		write(msh->out, cpy->name, ft_strlen(cpy->name));
+		write(msh->out, "=\n", 2);
+	}
+}
+
 void	ft_env(t_msh *msh)
 {
 	t_env	*cpy;
 
 	cpy = msh->env;
+	if (msh->out)
+	{
+		ft_env_red(msh, cpy);
+		return ;
+	}
 	while (cpy->next != NULL)
 	{
 		if (!cpy->egal && cpy->value)

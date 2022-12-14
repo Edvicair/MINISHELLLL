@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 16:48:51 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/01 14:03:46 by edvicair         ###   ########.fr       */
+/*   Updated: 2022/12/14 02:31:10 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,12 @@ void	ft_echo(t_msh *msh)
 {
 	int	i;
 	int	j;
+	int fd;
 	bool	res;
 
+	fd = 1;
+	if (msh->out)
+		fd = msh->out;
 	res = check_option(msh);
 	if (res == 1)
 		i = 2;
@@ -67,10 +71,10 @@ void	ft_echo(t_msh *msh)
 	while (msh->token->cmd[i])
 	{
 		if (i > j)
-			printf(" ");
-		printf("%s", msh->token->cmd[i]);
+			write(fd, " ", 1);
+		write(fd, msh->token->cmd[i], ft_strlen(msh->token->cmd[i]));
 		i++;
 	}
 	if (res == 0)
-		printf("\n");
+		write(fd, "\n", 1);
 }

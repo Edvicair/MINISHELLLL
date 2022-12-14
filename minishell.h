@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/09 10:57:07 by edvicair         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:02:37 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_token
 	t_redir	*redir;
 	char	**cmd;
 	int	child;
+	int in;
+	int out;
 	int	fd[2];
 	struct s_token	*next;	
 }				t_token;

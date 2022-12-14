@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:36:23 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/09 15:47:21 by edvicair         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:35:20 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ t_redir	*redi_less(char *str)
 			R++;
 		i++;
 	}
-	j = i + 2;
+	j = i + 1;
 	while (str[j] && ((str[j] <= 9 && str[j] >= 13) || str[j] != 32))
 		j++;
-    ft_redir_add_back(&red, ft_redir_new(R, ft_substr(str, (i + 1), ((j - i) + 1))));
+    ft_redir_add_back(&red, ft_redir_new(R, ft_substr(str, (i + 1), (j - i))));
 	return (red);
 }
