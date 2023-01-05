@@ -6,27 +6,27 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:46:25 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/27 23:33:48 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:17:00 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*exec_path(char **cmd, char **path)
+static char	*exec_path(t_msh *msh, char **cmd, char **path)
 {
 	int		i;
 	char	*tmp;
-	char *paths
+	char *path_b;
 
 	i = 0;
 	while (path[i])
 	{
-		tmp = ft_strjoin(path[i], "/");
-		paths = ft_strjoin(tmp, cmd[0]);
+		tmp = ft_strjoin(msh, path[i], "/");
+		path_b = ft_strjoin(msh, tmp, cmd[0]);
 		free(tmp);
-		if (access(paths, X_OK) == 0)
-			return (paths);
-		free(paths);
+		if (access(path_b, X_OK) == 0)
+			return (path_b);
+		free(path_b);
 		i++;
 	}
 	if (!path[i])
@@ -53,18 +53,18 @@ void	exec(t_msh *msh, char **cmd, char **env)
 		}
 		cpy = cpy->next;
 	}
-	paths = exec_path(cmd, path);
+	paths = exec_path(msh, cmd, path);
 	free(path);
 	if (paths == NULL)
 	{
 		write(2, "Can't find command\n", 19);
-		ft_free_double(paths);
-		free_double(cmd);
+		//ft_free_double(paths);
+		//free_double(cmd);
 		exit(0);
 	}
 	else if (execve(paths, cmd, env) == -1)
 	{
 		perror("Can't execve");
-		free_double(paths);
+		//free_double(paths);
 	}
 }

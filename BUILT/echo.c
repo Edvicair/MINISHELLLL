@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 16:48:51 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/14 02:31:10 by edvicair         ###   ########.fr       */
+/*   Updated: 2022/12/31 16:16:50 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	ft_echo(t_msh *msh)
 	if (msh->out)
 		fd = msh->out;
 	res = check_option(msh);
+	printf("res = %d\n", res);
 	if (res == 1)
 		i = 2;
 	else

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/12 19:02:37 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:41:45 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_msh
 	t_token	*token;
 }				t_msh;
 
-//PARSING//
+						//PARSING//
 int		is_quote(char *str);
 char	**tokenizator(char *str, t_msh *msh);
 int	split_quote(char *str, int i, char quote);
@@ -94,6 +94,9 @@ int	split_quote(char *str, int i, char quote);
 int		is_quote(char *str);
 int	strlen_quote(char *str, int min, int max);
 
+						// EXEC //
+void	one_child(t_msh *msh, int in, int out);
+void	exec(t_msh *msh, char **cmd, char **env);
 						// LIB //
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -119,6 +122,7 @@ void	ft_cd(t_msh *msh);
 
 						// INIT //
 void    free_one_env(t_env *env);
+t_token	*ft_fill_token(t_msh *msh);
 void	ft_init_struct(t_msh *msh, char **env);
 void	ft_env_add_back(t_env **env, t_env *new);
 t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal);
@@ -126,7 +130,6 @@ void	ft_loc_add_back(t_loc **loc, t_loc *new);
 t_loc	*ft_loc_last(t_loc *loc);
 t_loc	*ft_loc_new(void *content);
 char	**ft_split_space(char const *s);
-t_token	*ft_fill_token(t_msh *msh);
 void	ft_free_token(t_token *token);
 t_redir	*redi_less(char *str);
 

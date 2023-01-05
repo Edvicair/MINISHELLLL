@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 17:31:52 by motaouss          #+#    #+#             */
-/*   Updated: 2022/11/29 05:43:46 by motaouss         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:26:08 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	parser(t_msh *msh)
 		printf("Syntax Error\n");
 	else
 	{
-		
 		msh->token = ft_fill_token(msh);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:39:31 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/14 01:36:17 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:41:25 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	ft_check_redirection(t_msh *msh)
 	{
 		if (cpy->next)
 		{
-			printf("FELDUP = %s\n", cpy->feldup);
 			redir_in(cpy, msh);
 			redir_out(cpy, msh);
 			cpy = cpy->next;
@@ -75,7 +74,6 @@ void	ft_check_redirection(t_msh *msh)
 	}
 	if (cpy)
 	{
-	printf("2ici\n");
 		redir_in(cpy, msh);
 		redir_out(cpy, msh);
 	}
@@ -84,7 +82,6 @@ void	ft_check_redirection(t_msh *msh)
 void	ft_cmd(t_msh *msh)
 {
 	ft_check_redirection(msh);
-	printf("oui\n");
 	if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "cd", 3))
 		ft_cd(msh);
 	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "pwd", 4))
@@ -109,7 +106,7 @@ void	ft_cmd(t_msh *msh)
 			printf("cmd[%d] = %s\n", i, msh->token->cmd[i]);
 			i++;
 		}
-		printf("else cmd\n");
+		one_child(msh, msh->token->in, msh->token->out);
 	}
 	ft_free_token(msh->token);
 }
@@ -137,7 +134,7 @@ int	main(int ac, char **av, char **env)
 		else
 			break;
 	}
-	printf("exit\n");
+	//printf("exit\n");
 	free(msh.line);
 	return (0);
 }

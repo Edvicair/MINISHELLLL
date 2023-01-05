@@ -6,25 +6,17 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 10:34:23 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/09 19:23:02 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:30:11 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// t_redir sep_redir(char **cmd)
-// {
-// 	t_redir	
-// 	char *tmp;
-
-// 	cmd = split_redir();
-// }
-
-int		count_sep(char *s)
+int	count_sep(char *s)
 {
-	int i;
-	int count;
-	bool r;
+	int		i;
+	int		count;
+	bool	r;
 
 	i = 0;
 	count = 0;
@@ -46,10 +38,10 @@ int		count_sep(char *s)
 
 char	*cut_redir(char *cmd)
 {
-	char *cpy;
-	int i;
-	int j;
-	int	r;
+	char	*cpy;
+	int		i;
+	int		j;
+	int		r;
 
 	i = 0;
 	r = 0;
@@ -76,7 +68,7 @@ char	*cut_redir(char *cmd)
 t_token	*ft_token_new(t_msh *msh, char *cmd)
 {
 	t_token	*lst_token;
-	char *cpy;
+	char	*cpy;
 
 	lst_token = (t_token *)malloc(sizeof(t_token));
 	if (!lst_token)
@@ -119,21 +111,21 @@ void	ft_token_add_back(t_token **token, t_token *new)
 
 t_token	*ft_fill_token(t_msh *msh)
 {
-	char **pipe;
-    t_token *token;
-	int i;
+	char	**pipe;
+	t_token	*token;
+	int		i;
 
 	i = 0;
-    token = NULL;
+	token = NULL;
 	msh->pip = ft_strshr(msh->line, '|');
 	pipe = ft_split(msh->line, '|');
-    if (!pipe[i])
-        return (token);
+	if (!pipe[i])
+		return (token);
 	while (pipe[i])
 	{
 		ft_token_add_back(&token, ft_token_new(msh, pipe[i]));
 		i++;
 	}
 	ft_free_double(pipe);
-    return (token);
+	return (token);
 }

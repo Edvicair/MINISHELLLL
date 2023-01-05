@@ -5,51 +5,101 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/26 17:36:39 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/01 13:05:21 by edvicair         ###   ########.fr       */
+/*   Created: 2023/01/04 11:10:32 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/05 16:42:24 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    one_child(t_msh *msh, int child, int in, int out)
+size_t count_tab(t_env *env)
 {
-        t_token *cpy;
+	t_env *cpy;
+	size_t count;
 
-        cpy = msh->token;
-        child = fork();
-        if (child == -1)
-        {
-            perror("Can't fork");
-//          free_double(pipe->path);
-            exit(0);
-	    }
-        if (child = 0)
-        {
-            if (in && !out)
-            {
-                dup2(in, STDIN_FILENO);
-                dup2(cpy->fd[1], STDOUT_FILENO)
-                close(cpy->fd[0]);
-                close(cpy->fd[1]);
-            }
-            else if (!in && out)
-            {
-                dup2(out, STDOUT_FILENO);
-                dup2(cpy->fd[0], STDIN_FILENO);
-                close(cpy->fd[1]);
-                close(cpy->fd[0]);
-            }
-            else
-            {
-                dup2()
-            }   
-            
-        }
+	cpy = env;
+	count = 0;
+	while (cpy && cpy->next)
+	{
+		count++;
+		cpy = cpy->next;
+	}
+	return (count);
 }
-void    ft_child(t_msh *t_msh)
+
+char	**tab_env(t_msh *msh, t_env *env)
 {
-    int in;
-    int out;
-    
+	char **str;
+	t_env *cpy;
+	size_t i;
+
+	cpy = env;
+	i = count_tab(env);
+	str = (char **)malloc(sizeof(char *) * i + 1);
+	i = 0;
+	while (cpy->next)
+	{
+		if (cpy->name && cpy->value)
+		{
+			str[i] = ft_strjoin(msh, cpy->name, "=");
+			str[i] = ft_strjoin(msh, str[i], cpy->value);
+		}
+		i++;
+		cpy = cpy->next;
+	}
+	if (cpy->name && cpy->value)
+	{
+		str[i] = ft_strjoin(msh, cpy->name, "=");
+		str[i] = ft_strjoin(msh, str[i], cpy->value);
+		i++;
+		str[i] = NULL;
+	}
+	return (str);
+}
+
+void	one_child(t_msh *msh, int in, int out)
+{
+	t_token *cpy;
+	char **env;
+
+	cpy = msh->token;
+	env = tab_env(msh, msh->env);
+	msh->token->child = fork();
+	if (msh->token->child == -1)
+	{
+		perror("Can't fork");
+//	  free_double(pipe->path);
+		exit(0);
+	}
+	if (msh->token->child == 0)
+	{
+		if (in && !out)
+		{
+			dup2(in, STDIN_FILENO);
+			dup2(cpy->fd[1], STDOUT_FILENO);
+			close(cpy->fd[0]);
+			close(cpy->fd[1]);
+			exec(msh, msh->token->cmd, env);
+		}
+		else if (!in && out)
+		{
+			dup2(out, STDOUT_FILENO);
+			dup2(cpy->fd[0], STDIN_FILENO);
+			close(cpy->fd[1]);
+			close(cpy->fd[0]);
+			exec(msh, msh->token->cmd, env);
+		}
+		// else if (!in && !out)
+		// {
+		// 	dup2()
+		// }
+	}
+	close(cpy->fd[1]);
+	close(cpy->fd[0]);
+}
+void	ft_child(t_msh *t_msh)
+{
+	int in;
+	int out;
+		
 }
