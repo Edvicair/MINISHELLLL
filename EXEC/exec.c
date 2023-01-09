@@ -6,11 +6,11 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:46:25 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/04 14:17:00 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/09 02:21:38 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static char	*exec_path(t_msh *msh, char **cmd, char **path)
 {
@@ -44,6 +44,7 @@ void	exec(t_msh *msh, char **cmd, char **env)
 	t_env	*cpy;
 
 	cpy = msh->env;
+	printf("exec\n");
 	while (cpy->next)
 	{
 		if (!ft_strncmp(cpy->name, "PATH", 5))

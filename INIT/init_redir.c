@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 11:36:23 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/12 19:35:20 by edvicair         ###   ########.fr       */
+/*   Created: 2022/11/30 00:20:01 by motaouss          #+#    #+#             */
+/*   Updated: 2023/01/09 09:33:57 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,44 +67,6 @@ void	ft_redir_add_back(t_redir **redir, t_redir *new)
 	}
 }
 
-t_redir *ft_init_redir(char *word, int R)
-{
-    t_redir *red;
-    
-    red = NULL;
-    ft_redir_add_back(&red, ft_redir_new(R, word));
-    return (red);
-}
-
-// int	redi_less(t_msh *msh, char *str, int i)
-// {
-// 	int R;
-// 	int j;
-//     t_redir *red;
-//     char *word;
-
-// 	R = 0;
-// 	while ((str[i] <= 9 && str[i] >= 13) || str[i] != 32)
-// 	{
-// 		if (str[i] == '>')
-// 			R--;
-// 		else if (str[i] == '<')
-// 			R++;
-// 		i++;
-// 	}
-// 	j = i + 1;
-// 	while ((str[j] <= 9 && str[j] >= 13) || str[j] != 32)
-// 		j++;
-//     word = ft_substr(str, i, ((j - i) + 1));
-// 	msh->token->redir = ft_init_redir(word, R);
-// 	if(msh->token->redir)
-// 		printf("OK\n");
-// 	if(!msh->token->redir)
-// 		printf("PAS OK\n");
-//     printf("FINAL->feldup = %s\n", msh->token->redir->feldup);
-// 	return(i + j);
-// }
-
 t_redir	*redi_less(char *str)
 {
 	int i;
@@ -116,7 +78,11 @@ t_redir	*redi_less(char *str)
 	i = 0;
 	R = 0;
 	while (str[i] && str[i] != '<' && str[i] != '>')
+	{
+		if (str[i] == '\'' || str[i] == '"')
+			i = split_what(str, i, str[i]);
 		i++;
+	}
 	while (str[i] && (str[i] == '<' || str[i] == '>'))
 	{
 		if (str[i] == '>')
@@ -125,9 +91,14 @@ t_redir	*redi_less(char *str)
 			R++;
 		i++;
 	}
-	j = i + 1;
-	while (str[j] && ((str[j] <= 9 && str[j] >= 13) || str[j] != 32))
+	while (str[i] == ' ')
+		i++;
+	j = i;
+	while (str[j] && str[j] != ' ' && str[j] != '>' && str[j] != '>')
 		j++;
-    ft_redir_add_back(&red, ft_redir_new(R, ft_substr(str, (i + 1), (j - i))));
+	if (str[i])
+    	ft_redir_add_back(&red, ft_redir_new(R, ft_substr2(str, i, j)));
+	else
+    	ft_redir_add_back(&red, ft_redir_new(R, NULL));
 	return (red);
 }

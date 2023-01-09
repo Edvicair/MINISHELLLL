@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 13:07:26 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/04 07:54:31 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/09 09:51:08 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,5 @@ void	ft_init_struct(t_msh *msh, char **env)
 	msh->line = NULL;
 	msh->token = NULL;
 	msh->in = 0;
-	msh->out = 0;
+	msh->out = 1;
 }

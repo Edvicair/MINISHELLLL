@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/05 16:41:45 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:00:44 by motaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ typedef struct s_msh
 
 						//PARSING//
 int		is_quote(char *str);
-char	**tokenizator(char *str, t_msh *msh);
-int	split_quote(char *str, int i, char quote);
+char	**tokenizator(char *str, char c);
+int	split_what(char *str, int i, char quote);
 //void	freezer(t_token *token);
-void	parser(t_msh *msh);
+int	parser(t_msh *msh);
 //int	tokenizator(char *str, t_token *token);
 int	strlen_quote(char *str, int min, int max);
 int	find_quote(char *str, int min , int max);
@@ -93,6 +93,17 @@ char	*ft_substr2(const char *s, int min, int max);
 int	split_quote(char *str, int i, char quote);
 int		is_quote(char *str);
 int	strlen_quote(char *str, int min, int max);
+int	pipe_error(char *line);
+char	*space_chips(char *line);
+char	*ft_substr_pipe(const char *s, unsigned int start, unsigned int end);
+int	redir_error(char *line);
+t_redir	*redi_less(char *str);
+void	ft_redir_add_back(t_redir **redir, t_redir *new);
+t_redir	*ft_redir_last(t_redir *redir);
+t_redir	*ft_redir_new(int R, char *word);
+t_type  ft_choose_type(int R);
+char	*ft_substr_redir(char *s);
+int		ft_strlen_redir(char *str);
 
 						// EXEC //
 void	one_child(t_msh *msh, int in, int out);
