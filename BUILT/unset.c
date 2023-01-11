@@ -6,13 +6,13 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 06:30:57 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/04 10:24:47 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:06:16 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_unset_first(t_msh *msh, t_env *cpy, t_env *cpy_b)
+int	ft_unset_first(t_msh *msh, t_env *cpy)
 {
 	if (!ft_strcmp(cpy->name, msh->token->cmd[1]))
 	{
@@ -45,31 +45,43 @@ void	cut_env(t_env *env, t_env *cut, bool i)
 	free(tmp);
 }
 
+int 	ft_unset_bis(t_msh *msh, t_env *cpy, t_env *cpy_b, int j)
+{
+	if (!ft_strncmp(cpy->name, msh->token->cmd[j], (ft_strlen(msh->token->cmd[j]) + 1)))
+	{
+		if (cpy->next)
+		{
+			cut_env(cpy_b, cpy, 1);
+			return (1);
+		}
+	}
+	return (0);
+}
 void	ft_unset(t_msh *msh)
 {
 	t_env	*cpy;
 	t_env	*cpy_b;
 	int i;
+	int j;
 
+	j = 0;
 	if (!msh->token->cmd[1])
 		return ;
-	cpy = msh->env;
-	i = ft_unset_first(msh, cpy, cpy_b);
-	while (!i && cpy->next)
+	while (msh->token->cmd[++j])
 	{
-		if (!ft_strncmp(cpy->name, msh->token->cmd[1], (ft_strlen(msh->token->cmd[1]) + 1)))
+		i = 0;
+		cpy = msh->env;
+		i = ft_unset_first(msh, cpy);
+		while (!i && cpy->next)
 		{
-			if (cpy->next)
-				cut_env(cpy_b, cpy, 1);
-			i++;
-			break ;
+			cpy_b = cpy;
+			cpy = cpy->next;
+			i = ft_unset_bis(msh, cpy, cpy_b, j);
 		}
-		cpy_b = cpy;
-		cpy = cpy->next;
-	}
-	if (!i && !ft_strncmp(cpy->name, msh->token->cmd[1], (ft_strlen(msh->token->cmd[1]) + 1)))
-	{
-		cut_env(cpy_b, cpy, 0);
-		cpy_b->next = NULL;
+		if (!i && !ft_strncmp(cpy->name, msh->token->cmd[j], (ft_strlen(msh->token->cmd[j]) + 1)))
+		{
+			cut_env(cpy_b, cpy, 0);
+			cpy_b->next = NULL;
+		}
 	}
 }

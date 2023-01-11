@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 12:47:57 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/09 19:34:20 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:15:10 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_cd_path(t_msh *msh)
 	pwd = NULL;
 	free(pwd);
 	// if (msh->token->cmd[1])
-		ret = chdir(msh->token->cmd[1]);
+	ret = chdir(msh->token->cmd[1]);
 	// else if (msh->token->redir->type == RE_G)
 	// 	ret = chdir(msh->token->redir->feldup);
 	if (ret == -1)
@@ -107,18 +107,10 @@ void	ft_cd(t_msh *msh)
 {
 	if (msh->token->cmd[1] == NULL)
 		ft_cd_home(msh);
-	else if (msh->token->cmd[1] && !ft_strcmp("--", msh->token->cmd[1]))
+	else if (msh->token->cmd[1] && !ft_strncmp("--", msh->token->cmd[1], 3))
 		ft_cd_home(msh);
-	else if (msh->token->cmd[1] && !ft_strcmp("-", msh->token->cmd[1]))
+	else if (msh->token->cmd[1] && !ft_strncmp("-", msh->token->cmd[1], 2))
 		ft_cd_old(msh);
 	else if (msh->token->cmd[1] != NULL)
 		ft_cd_path(msh);
-	// if (msh->token->cmd[1] == NULL && !msh->token->redir)
-	// 	ft_cd_home(msh);
-	// else if (msh->token->cmd[1] && !ft_strcmp("--", msh->token->cmd[1]))
-	// 	ft_cd_home(msh);
-	// else if (msh->token->cmd[1] && !ft_strcmp("-", msh->token->cmd[1]))
-	// 	ft_cd_old(msh);
-	// else if (msh->token->cmd[1] != NULL || msh->token->redir)
-	// 	ft_cd_path(msh);
 }

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 20:28:00 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/14 02:57:49 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/09 10:18:25 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_env(t_msh *msh)
 	t_env	*cpy;
 
 	cpy = msh->env;
-	if (msh->out)
+	if (msh->out != 0 && msh->out != 1)
 	{
 		ft_env_red(msh, cpy);
 		return ;

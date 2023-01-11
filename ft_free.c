@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 04:36:08 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/09 15:53:57 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:13:33 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,24 @@ void    ft_free_redir(t_redir *redir)
     free(redir);    
 }
 
-void	ft_free_token(t_token *token)
+void	ft_free_token(t_msh *msh)
 {
 	t_token *tmp;
+    t_token *tokens;
 	
-	while (token->next)
+    tokens = msh->token;
+	while (tokens->next)
 	{
-        if (token->redir)
-            ft_free_redir(token->redir);
-		ft_free_double(token->cmd);
-		tmp = token;
-		token = token->next;
+        if (tokens->redir)
+            ft_free_redir(tokens->redir);
+		ft_free_double(tokens->cmd);
+		tmp = tokens;
+		tokens = tokens->next;
 		free(tmp);
 	}
-	ft_free_double(token->cmd);
-	free(token);
-	token = NULL;
+	ft_free_double(tokens->cmd);
+	free(tokens);
+	tokens = NULL;
+    msh->in = 0;
+    msh->out = 1;
 }

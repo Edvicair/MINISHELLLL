@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/05 18:00:44 by motaouss         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:08:32 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_loc
 
 typedef enum	s_type
 {
+	NO_REDIR,
 	RE_G,
 	H_DOC,
 	RE_D,
@@ -72,7 +73,7 @@ typedef struct s_msh
 {
 	t_env	*env;
 	char	*line;
-	bool	pip;
+	int	pip;
 	int	in;
 	int	out;
 	t_token	*token;
@@ -106,7 +107,7 @@ char	*ft_substr_redir(char *s);
 int		ft_strlen_redir(char *str);
 
 						// EXEC //
-void	one_child(t_msh *msh, int in, int out);
+void	one_child(t_msh *msh);
 void	exec(t_msh *msh, char **cmd, char **env);
 						// LIB //
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -141,7 +142,7 @@ void	ft_loc_add_back(t_loc **loc, t_loc *new);
 t_loc	*ft_loc_last(t_loc *loc);
 t_loc	*ft_loc_new(void *content);
 char	**ft_split_space(char const *s);
-void	ft_free_token(t_token *token);
+void	ft_free_token(t_msh *msh);
 t_redir	*redi_less(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 11:10:32 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/09 09:53:23 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:13:21 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,49 +57,34 @@ char	**tab_env(t_msh *msh, t_env *env)
 	return (str);
 }
 
-void	one_child(t_msh *msh, int in, int out)
+void	one_child(t_msh *msh)
 {
 	t_token *cpy;
 	char **env;
 
-	printf("one child\n");
-	printf("	in = %d | out = %d\n", in, out);
 	cpy = msh->token;
 	env = tab_env(msh, msh->env);
 	msh->token->child = fork();
 	if (msh->token->child == -1)
 	{
 		perror("Can't fork");
-//	  free_double(pipe->path);
 		exit(0);
 	}
 	if (msh->token->child == 0)
 	{
-		if (in && !out)
+		if (msh->in)
 		{
-			printf("	if\n");
-			dup2(in, STDIN_FILENO);
-			dup2(cpy->fd[1], STDOUT_FILENO);
-			close(cpy->fd[0]);
-			close(cpy->fd[1]);
-			exec(msh, msh->token->cmd, env);
+			dup2(msh->in, STDIN_FILENO);
+			close(msh->in);
 		}
-		else if (!in && out)
+		if (msh->out != 1)
 		{
-			printf("	else if\n");
-			dup2(out, STDOUT_FILENO);
-			dup2(cpy->fd[0], STDIN_FILENO);
-			close(cpy->fd[1]);
-			close(cpy->fd[0]);
-			exec(msh, msh->token->cmd, env);
+			dup2(msh->out, STDOUT_FILENO);
+			close(msh->out);
 		}
+		exec(msh, msh->token->cmd, env);
 	}
-	close(cpy->fd[1]);
-	close(cpy->fd[0]);
 }
 void	ft_child(t_msh *t_msh)
 {
-	int in;
-	int out;
-		
 }

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:20:01 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/09 09:33:57 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:14:24 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_type  ft_choose_type(int R)
         t = RE_D;
     else if (R == -2)
 		t = RE_DD;
+	else
+		t = NO_REDIR;
     return (t);
 }
 
@@ -76,29 +78,33 @@ t_redir	*redi_less(char *str)
     
     red = NULL;
 	i = 0;
-	R = 0;
-	while (str[i] && str[i] != '<' && str[i] != '>')
+	j = 0;
+	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
-			i = split_what(str, i, str[i]);
-		i++;
+		R = 0;
+		while (str[i] && str[i] != '<' && str[i] != '>')
+		{
+			if (str[i] == '\'' || str[i] == '"')
+				i = split_what(str, i, str[i]);
+			i++;
+		}
+		while (str[i] && (str[i] == '<' || str[i] == '>'))
+		{
+			if (str[i] == '>')
+				R--;
+			else if (str[i] == '<')
+				R++;
+			i++;
+		}
+		while (str[i] == ' ')
+			i++;
+		j = i;
+		while (str[j] && str[j] != ' ' && str[j] != '>' && str[j] != '>')
+			j++;
+		if (R != 0)
+			ft_redir_add_back(&red, ft_redir_new(R, ft_substr2(str, i, j)));
+		else if (R == 0 && !(red))
+			ft_redir_add_back(&red, ft_redir_new(R, NULL));
 	}
-	while (str[i] && (str[i] == '<' || str[i] == '>'))
-	{
-		if (str[i] == '>')
-			R--;
-		else if (str[i] == '<')
-			R++;
-		i++;
-	}
-	while (str[i] == ' ')
-		i++;
-	j = i;
-	while (str[j] && str[j] != ' ' && str[j] != '>' && str[j] != '>')
-		j++;
-	if (str[i])
-    	ft_redir_add_back(&red, ft_redir_new(R, ft_substr2(str, i, j)));
-	else
-    	ft_redir_add_back(&red, ft_redir_new(R, NULL));
 	return (red);
 }
