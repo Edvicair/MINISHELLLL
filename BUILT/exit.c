@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:12:04 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/26 16:52:50 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 07:47:15 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,54 @@ void	ft_free_env(t_env *env)
 	t_env *tmp;
 
 	tmp = NULL;
-	while (env->next)
+	while (env)
 	{
-		if (env->name);
+		if (env->name)
+		{
 			free(env->name);
-		if (env->value);
+			env->name = NULL;
+		}
+		if (env->value)
+		{
 			free(env->value);
-		tmp = env;
-		env = env->next;
-		free(tmp);
+			env->value = NULL;
+		}
+		if (env->next)
+		{
+			tmp = env;
+			env = env->next;
+			if (tmp)
+				free(tmp);
+			tmp = NULL;
+		}
+		else 
+			break;
 	}
-	if (env->name);
-		free(env->name);
-	if (env->value);
-		free(env->value);
-	tmp = env;
-	env = env->next;
-	free(tmp);
+	free(env);
+	env = NULL;
 }
 
-void	ft_exit(t_msh *msh)
+void	ft_exit(t_msh *msh, int stin)
 {
 	int res;
 
 	ft_free_env(msh->env);
-	if (msh->token->cmd[1])
+	if (msh->token)
 	{
-		free(msh->line);
-		res = ft_atoi(msh->token->cmd[1]);
-		ft_free_double(msh->token->cmd);
-		exit(res);
+		if (msh->token->cmd[1])
+		{
+			free(msh->line);
+			res = ft_atoi(msh->token->cmd[1]);
+			ft_free_token(msh, msh->token);
+			exit(res);
+		}
+		close(msh->fd[0]);
+		close(msh->fd[1]);
+		dup2(stin, 0);
+		close(stin);
 	}
-	ft_free_double(msh->token->cmd);
+	if (msh->token)
+		ft_free_token(msh, msh->token);
 	free(msh->line);
 	exit(0);
 }

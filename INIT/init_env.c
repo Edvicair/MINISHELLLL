@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 13:07:26 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/10 21:00:57 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 07:39:55 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal)
 	lst_env = (t_env *)malloc(sizeof(t_env));
 	if (!lst_env)
 		return (NULL);
-	lst_env->name = ft_strdup(msh, name);
+	lst_env->name = ft_strdup(name);
 	if (!value)
 		lst_env->value = NULL;
-	else
-		lst_env->value = ft_strdup(msh, value);
+	else  {
+		lst_env->value = ft_strdup(value);
+	}
 	if (!egal)
 		lst_env->egal = 0;
 	else
@@ -81,6 +82,7 @@ void	ft_init_struct(t_msh *msh, char **env)
 	msh->env = fill_env(msh, env);
 	msh->line = NULL;
 	msh->token = NULL;
+	msh->stin = 0;
 	msh->in = 0;
 	msh->out = 1;
 	msh->pip = 0;

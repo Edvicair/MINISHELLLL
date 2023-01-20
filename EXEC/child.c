@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 11:10:32 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/11 16:13:21 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 08:34:58 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ size_t count_tab(t_env *env)
 
 	cpy = env;
 	count = 0;
-	while (cpy && cpy->next)
+	while (cpy)
 	{
 		count++;
-		cpy = cpy->next;
+		if (cpy->next)
+			cpy = cpy->next;
+		else
+			break;
 	}
 	return (count);
 }
@@ -30,61 +33,69 @@ size_t count_tab(t_env *env)
 char	**tab_env(t_msh *msh, t_env *env)
 {
 	char **str;
+	char *tmp;
 	t_env *cpy;
 	size_t i;
 
 	cpy = env;
 	i = count_tab(env);
-	str = (char **)malloc(sizeof(char *) * i + 1);
+	printf("count_tab = %ld + 1\n", i);
+	str = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	while (cpy->next)
+	while (cpy)
 	{
 		if (cpy->name && cpy->value)
 		{
-			str[i] = ft_strjoin(msh, cpy->name, "=");
-			str[i] = ft_strjoin(msh, str[i], cpy->value);
+			tmp = ft_strjoin(msh, cpy->name, "=");
+			str[i] = ft_strjoin(msh, tmp, cpy->value);
+			free(tmp);
 		}
 		i++;
-		cpy = cpy->next;
+		if (cpy->next)
+			cpy = cpy->next;
+		else
+			break;
 	}
-	if (cpy->name && cpy->value)
-	{
-		str[i] = ft_strjoin(msh, cpy->name, "=");
-		str[i] = ft_strjoin(msh, str[i], cpy->value);
-		i++;
-		str[i] = NULL;
-	}
+	str[i] = NULL;
 	return (str);
 }
 
-void	one_child(t_msh *msh)
+void ft_dup(t_msh *msh, t_token *token)
 {
-	t_token *cpy;
-	char **env;
 
-	cpy = msh->token;
-	env = tab_env(msh, msh->env);
-	msh->token->child = fork();
-	if (msh->token->child == -1)
-	{
-		perror("Can't fork");
-		exit(0);
-	}
-	if (msh->token->child == 0)
-	{
 		if (msh->in)
 		{
-			dup2(msh->in, STDIN_FILENO);
+			dup2(msh->in, 0);
 			close(msh->in);
 		}
 		if (msh->out != 1)
 		{
-			dup2(msh->out, STDOUT_FILENO);
+			dup2(msh->out, 1);
 			close(msh->out);
 		}
-		exec(msh, msh->token->cmd, env);
-	}
+		else if (msh->pip)
+			dup2(msh->fd[1], 1);
+		close(msh->fd[1]);
+		close(msh->fd[0]);
 }
-void	ft_child(t_msh *t_msh)
+
+void	one_child(t_msh *msh, t_token *token, int i, int stin)
 {
+	char **env;
+
+	token->child = fork();
+	if (token->child == -1)
+	{
+		perror("Can't fork");
+		exit(0);
+	}
+	if (token->child == 0)
+	{
+		env = tab_env(msh, msh->env);
+		ft_dup(msh, token);
+		close(stin);
+		exec(msh, token->cmd, env);
+	}
+	msh->tab[i] = token->child;
+	printf("tab[%d]\n", msh->tab[i]);
 }

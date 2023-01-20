@@ -6,104 +6,91 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:39:31 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/11 16:14:11 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 08:42:47 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redir_in(t_redir *redir, t_msh *msh)
+int	is_built(t_msh *msh, char **cmd)
 {
-	if (redir->type == RE_G)
-	{
-		if (msh->in != 0)
-			close(msh->in);
-		msh->in = open(redir->feldup, O_RDONLY);
-		if (msh->in < 0)
-			printf("can't open %s\n", redir->feldup);
-	}
-	else if (redir->type == H_DOC)
-	{
-		if (msh->in != 0)
-			close(msh->in);
-		msh->in = open(redir->feldup, O_RDONLY);
-		if (msh->in < 0)
-			printf("can't open %s\n", redir->feldup);
-	}
+	if (cmd[0] && (!ft_strncmp(cmd[0], "cd", 3) || !ft_strncmp(cmd[0], "exit", 5)))
+		return (1);
+	else if (cmd[0] && (!ft_strncmp(cmd[0], "echo", 5) || !ft_strncmp(cmd[0], "pwd", 4)))
+		return (1);
+	else if (cmd[0] && (!ft_strncmp(cmd[0], "env", 4) || !ft_strncmp(cmd[0], "getenv", 7)))
+		return (1);
+	else if (cmd[0] && (!ft_strncmp(cmd[0], "export", 7) || !ft_strncmp(cmd[0], "unset", 6)))
+		return (1);
+	return (0);
 }
 
-void	redir_out(t_redir *redir, t_msh *msh)
+void	exec_built(t_msh *msh, char **cmd, int stin)
 {
-	if (redir->type == RE_D)
+	if (msh->pip == 0)
 	{
-		if (msh->out != 1)
-			close(msh->out);
-		msh->out = open(redir->feldup, O_CREAT | O_TRUNC | O_WRONLY, 0664);
-		if (msh->out < 0)
-			printf("can't open %s\n", redir->feldup);
+		if (cmd[0] && !ft_strncmp(cmd[0], "cd", 3))
+			ft_cd(msh, cmd);
+		else if (cmd[0] && !ft_strncmp(cmd[0], "unset", 6))
+			ft_unset(msh, cmd);
+		if (cmd[0] && !ft_strncmp(cmd[0], "exit", 5))
+			ft_exit(msh, stin);
 	}
-	else if (redir->type == RE_DD)
-	{
-		if (msh->out != 1)
-			close(msh->out);
-		msh->out = open(redir->feldup, O_CREAT | O_APPEND | O_WRONLY, 0664);
-		if (msh->out < 0)
-				printf("can't open %s\n", redir->feldup);
-	}
-	
-}
-
-void	ft_check_redirection(t_msh *msh)
-{
-	t_redir *cpy;
-	bool i;
-
-	cpy = msh->token->redir;
-	i = 0;
-	if (!msh->token->redir->feldup)
-		return;
-	while (cpy && !i)
-	{
-		if (cpy->next)
-		{
-			redir_in(cpy, msh);
-			redir_out(cpy, msh);
-			cpy = cpy->next;
-		}
-		else
-			i = 1;
-	}
-	if (cpy)
-	{
-		redir_in(cpy, msh);
-		redir_out(cpy, msh);
-	}
+	if (cmd[0] && !ft_strncmp(cmd[0], "pwd", 4))
+		ft_pwd(msh);
+	else if (cmd[0] && !ft_strncmp(cmd[0], "env", 4))
+		ft_env(msh);
+	else if (cmd[0] && !ft_strncmp(cmd[0], "echo", 5))
+		ft_echo(msh, cmd);
+	else if (cmd[0] && !ft_strncmp(cmd[0], "export", 7))
+		ft_export(msh, cmd);
 }
 
 void	ft_cmd(t_msh *msh)
 {
-	ft_check_redirection(msh);
-	if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "cd", 3))
-		ft_cd(msh);
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "pwd", 4))
-		ft_pwd(msh);
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "env", 4))
-		ft_env(msh);
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "export", 7))
-		ft_export(msh);
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "unset", 6))
-		ft_unset(msh);
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "getenv", 7))
-		printf("%s = %s\n", msh->token->cmd[1], ft_getenv(msh, msh->token->cmd[1]));
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "echo", 5))
-		ft_echo(msh);
-	else if (msh->token->cmd[0] && !ft_strncmp(msh->token->cmd[0], "exit", 5))
-		ft_exit(msh);
-	else
-		one_child(msh);
-	if (msh->token->child)
-		waitpid(msh->token->child, NULL, 0);
-	ft_free_token(msh);
+	t_token *cpy;
+	t_redir *redir_cpy;
+	int nb;
+	int i;
+
+	i = 0;
+	cpy = msh->token;
+	nb = msh->pip;
+	msh->stin = dup(0);
+	msh->tab = (int *)malloc(sizeof(int) * (msh->pip + 1));
+	if (!msh->tab)
+		return;
+	while (msh->pip >= 0)
+	{
+		if (pipe(msh->fd))
+			break;
+		ft_check_redirection(msh);
+	 	if (is_built(msh, cpy->cmd))
+	 		exec_built(msh, cpy->cmd, msh->stin);
+		else
+		{
+			one_child(msh, cpy, i, msh->stin);
+			if (cpy->child && msh->pip)
+			{
+				dup2(msh->fd[0], 0);
+				close(msh->fd[0]);
+				close(msh->fd[1]);			
+			}
+			i++;
+		}
+		if (msh->pip)
+			cpy = cpy->next;
+		msh->pip--;
+	}
+	close(msh->fd[0]);
+	close(msh->fd[1]);
+	while (i > 0)
+		waitpid(msh->tab[--i], NULL, 0);
+	dup2(msh->stin, 0);
+	close(msh->stin);
+	msh->pip = nb;
+	ft_free_token(msh, msh->token);
+	free(msh->tab);
 }
 
 int	main(int ac, char **av, char **env)
@@ -120,15 +107,16 @@ int	main(int ac, char **av, char **env)
 			add_history(msh.line);
 			if (parser(&msh))
 			{
-				if (msh.token && !msh.pip)
+				if (msh.token)
 					ft_cmd(&msh);
 			}
 			free(msh.line);
+			msh.line = NULL;
 		}
 		else
 			break;
 	}
 	printf("exit\n");
-	free(msh.line);
+	ft_exit(&msh, msh.stin);
 	return (0);
 }

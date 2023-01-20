@@ -6,13 +6,14 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/11 13:08:32 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 07:56:54 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+//#include "get_next_line.h"
 # include "Libft/libft.h"
 # include <unistd.h>
 # include <stdio.h>
@@ -25,7 +26,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <curses.h>
-# include <term.h>
+// # include <term.h>
 
 typedef struct s_env
 {
@@ -63,9 +64,6 @@ typedef struct s_token
 	t_redir	*redir;
 	char	**cmd;
 	int	child;
-	int in;
-	int out;
-	int	fd[2];
 	struct s_token	*next;	
 }				t_token;
 
@@ -74,8 +72,11 @@ typedef struct s_msh
 	t_env	*env;
 	char	*line;
 	int	pip;
-	int	in;
-	int	out;
+	int	fd[2];
+	int stin;
+	int in;
+	int out;
+	int	*tab;
 	t_token	*token;
 }				t_msh;
 
@@ -107,8 +108,9 @@ char	*ft_substr_redir(char *s);
 int		ft_strlen_redir(char *str);
 
 						// EXEC //
-void	one_child(t_msh *msh);
+void	one_child(t_msh *msh, t_token *token, int i, int stin);
 void	exec(t_msh *msh, char **cmd, char **env);
+void	ft_check_redirection(t_msh *msh);
 						// LIB //
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -116,24 +118,24 @@ size_t	ft_strlen(const char *s);
 char	*ft_strjoin(t_msh *msh, char const *s1, char const *s2);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
-char	*ft_strdup(t_msh *msh, const char *s);
+char	*ft_strdup(const char *s);
 bool	ft_strshr(const char *s, int c);
 void    ft_free_double(char **s);
+void	ft_free_env(t_env *env);
 
 						// BUILT //
 void	ft_export_pwd(t_msh *msh, char *pwd, char *path);
 char	*ft_getenv(t_msh *msh, char *path);
-void	ft_export(t_msh *msh);
+void	ft_export(t_msh *msh, char **cmd);
 void	ft_sort_export(t_msh *msh);
-void	ft_unset(t_msh *msh);
-void	ft_echo(t_msh *msh);
-void	ft_exit(t_msh *msh);
+void	ft_unset(t_msh *msh,char **cmd);
+void	ft_echo(t_msh *msh, char **cmd);
+void	ft_exit(t_msh *msh, int stin);
 void	ft_pwd(t_msh *msh);
 void	ft_env(t_msh *msh);
-void	ft_cd(t_msh *msh);
+void	ft_cd(t_msh *msh, char **cmd);
 
 						// INIT //
-void    free_one_env(t_env *env);
 t_token	*ft_fill_token(t_msh *msh);
 void	ft_init_struct(t_msh *msh, char **env);
 void	ft_env_add_back(t_env **env, t_env *new);
@@ -142,7 +144,7 @@ void	ft_loc_add_back(t_loc **loc, t_loc *new);
 t_loc	*ft_loc_last(t_loc *loc);
 t_loc	*ft_loc_new(void *content);
 char	**ft_split_space(char const *s);
-void	ft_free_token(t_msh *msh);
+void	ft_free_token(t_msh *msh, t_token *token);
 t_redir	*redi_less(char *str);
 
 #endif

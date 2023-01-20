@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 10:34:23 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/11 16:12:44 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 02:48:06 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_token	*ft_token_new(t_msh *msh, char *cmd_p)
 	tmp = ft_substr_redir(cmd_p);
 	lst_token->cmd = tokenizator(tmp, ' ');
 	free(tmp);
-	if (!lst_token->fd)
-		return (NULL);
 	lst_token->next = 0;
 	return (lst_token);
 }
@@ -64,7 +62,6 @@ t_token	*ft_fill_token(t_msh *msh)
 
 	i = 0;
     token = NULL;
-	msh->pip = ft_strshr(msh->line, '|');
 	pipe = tokenizator(msh->line, '|');
    if (!pipe[i])
        return (token);
@@ -73,6 +70,7 @@ t_token	*ft_fill_token(t_msh *msh)
 		ft_token_add_back(&token, ft_token_new(msh, pipe[i]));
 		i++;
 	}
+	msh->pip = i - 1;
 	ft_free_double(pipe);
     return (token);
 }

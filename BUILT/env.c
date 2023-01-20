@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 20:28:00 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/09 10:18:25 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:35:49 by motaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_getenv(t_msh *msh, char *namee)
 	cpy = msh->env;
 	while (cpy->next)
 	{
-		if (!ft_strcmp(cpy->name, namee))
+		if (!ft_strncmp(cpy->name, namee, ft_strlen(namee)))
 			return (cpy->value);
 		cpy = cpy->next;
 	}
@@ -60,6 +60,8 @@ void	ft_env(t_msh *msh)
 	t_env	*cpy;
 
 	cpy = msh->env;
+	if (msh->token->cmd[1])
+		return;
 	if (msh->out != 0 && msh->out != 1)
 	{
 		ft_env_red(msh, cpy);

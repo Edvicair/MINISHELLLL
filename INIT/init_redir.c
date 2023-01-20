@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:20:01 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/11 16:14:24 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/18 19:24:02 by motaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_type  ft_choose_type(int R)
 t_redir	*ft_redir_new(int R, char *word)
 {
 	t_redir	*lst_redir;
-	char *cpy;
 
 	lst_redir = (t_redir *)malloc(sizeof(t_redir));
 	if (!lst_redir)

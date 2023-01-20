@@ -6,21 +6,12 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 04:36:08 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/11 16:13:33 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 08:19:55 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    free_one_env(t_env *env)
-{
-    free(env->name);
-    env->name = NULL;
-    free(env->value);
-    env->value = NULL;
-    free(env);
-    env = NULL;
-}
 
 void    ft_free_double(char **s)
 {
@@ -43,37 +34,42 @@ void    ft_free_redir(t_redir *redir)
 {
     t_redir *tmp;
 
-    while (redir->next)
+    while (redir)
     {
-        if (redir->feldup)
+    	if (redir->feldup)
             free(redir->feldup);
-        tmp = redir;
-        redir = redir->next;
-        free(tmp);
+        if (redir->next)
+        {
+    		tmp = redir;
+    		redir = redir->next;
+    		free(tmp);
+        }
+		else
+			break;
     }
-    if (redir->feldup)
-        free(redir->feldup);
-    free(redir);    
+    free(redir);
+	redir = NULL;
 }
 
-void	ft_free_token(t_msh *msh)
+void	ft_free_token(t_msh *msh, t_token *token)
 {
 	t_token *tmp;
-    t_token *tokens;
-	
-    tokens = msh->token;
-	while (tokens->next)
+
+	while (token)
 	{
-        if (tokens->redir)
-            ft_free_redir(tokens->redir);
-		ft_free_double(tokens->cmd);
-		tmp = tokens;
-		tokens = tokens->next;
-		free(tmp);
+        ft_free_redir(token->redir);
+		ft_free_double(token->cmd);
+		if (token->next)
+		{
+			tmp = token;
+			token = token->next;
+			free(tmp);
+		}
+		else
+			break;
 	}
-	ft_free_double(tokens->cmd);
-	free(tokens);
-	tokens = NULL;
+	free(token);
+	token = NULL;
     msh->in = 0;
     msh->out = 1;
 }

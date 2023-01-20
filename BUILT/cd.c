@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 12:47:57 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/11 16:15:10 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 05:28:01 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@ void	ft_export_pwd(t_msh *msh, char *pwd, char *path)
 	t_env	*cpy;
 
 	cpy = msh->env;
-	while (cpy->next)
+	while (cpy)
 	{
-		if (!ft_strcmp(cpy->name, pwd))
+		if (!ft_strncmp(cpy->name, pwd, ft_strlen(cpy->name)))
 		{
-			cpy->value = NULL;
-			free(cpy->value);
-			cpy->value = ft_strdup(msh, path);
+			if (cpy->value)
+				free(cpy->value);
+			cpy->value = ft_strdup(path);
 			break ;
 		}
-		cpy = cpy->next;
+		if (cpy->next)
+			cpy = cpy->next;
+		else
+			break;
 	}
-	cpy = msh->env;
 }
 
 void	ft_cd_home(t_msh *msh)
@@ -42,8 +44,8 @@ void	ft_cd_home(t_msh *msh)
 		printf("error pwd/n");
 	pwd = getcwd(pwd, 200);
 	ft_export_pwd(msh, "OLDPWD", pwd);
-	pwd = NULL;
 	free(pwd);
+	pwd = NULL;
 	home_path = getenv("HOME");
 	ret = chdir(home_path);
 	if (ret == -1)
@@ -64,19 +66,18 @@ void	ft_cd_old(t_msh *msh)
 	old_pwd = ft_getenv(msh, "OLDPWD");
 	pwd = getcwd(pwd, 200);
 	ft_export_pwd(msh, "OLDPWD", pwd);
-	pwd = NULL;
 	free(pwd);
+	pwd = NULL;
 	ret = chdir(old_pwd);
 	if (ret == -1)
 		printf("cd: no such file or directory : %s\n", old_pwd);
 	else
 	{
 		ft_export_pwd(msh, "PWD", old_pwd);
-		printf("%s\n", old_pwd);
 	}
 }
 
-void	ft_cd_path(t_msh *msh)
+void	ft_cd_path(t_msh *msh, char **cmd)
 {
 	int		ret;
 	char	*old_pwd;
@@ -89,28 +90,25 @@ void	ft_cd_path(t_msh *msh)
 		printf("error pwd/n");
 	pwd = getcwd(pwd, 200);
 	ft_export_pwd(msh, "OLDPWD", pwd);
-	pwd = NULL;
 	free(pwd);
-	// if (msh->token->cmd[1])
-	ret = chdir(msh->token->cmd[1]);
-	// else if (msh->token->redir->type == RE_G)
-	// 	ret = chdir(msh->token->redir->feldup);
+	pwd = NULL;
+	ret = chdir(cmd[1]);
 	if (ret == -1)
-		printf("cd: no such file or directory : %s\n", msh->token->cmd[1]);
+		printf("cd: no such file or directory : %s\n", cmd[1]);
 	else
 		ft_export_pwd(msh, "PWD", getcwd(new_pwd, 200));
-	new_pwd = NULL;
 	free(new_pwd);
+	new_pwd = NULL;
 }
 
-void	ft_cd(t_msh *msh)
+void	ft_cd(t_msh *msh, char **cmd)
 {
-	if (msh->token->cmd[1] == NULL)
+	if (cmd[1] == NULL)
 		ft_cd_home(msh);
-	else if (msh->token->cmd[1] && !ft_strncmp("--", msh->token->cmd[1], 3))
+	else if (cmd[1] && !ft_strncmp("--", cmd[1], 3))
 		ft_cd_home(msh);
-	else if (msh->token->cmd[1] && !ft_strncmp("-", msh->token->cmd[1], 2))
+	else if (cmd[1] && !ft_strncmp("-", cmd[1], 2))
 		ft_cd_old(msh);
-	else if (msh->token->cmd[1] != NULL)
-		ft_cd_path(msh);
+	else if (cmd[1] != NULL)
+		ft_cd_path(msh, cmd);
 }

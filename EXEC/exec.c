@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:46:25 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/10 20:48:08 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 08:18:57 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,17 @@ void	exec(t_msh *msh, char **cmd, char **env)
 		cpy = cpy->next;
 	}
 	paths = exec_path(msh, cmd, path);
-	free(path);
+	ft_free_double(path);
 	if (paths == NULL)
 	{
 		write(2, "Can't find command\n", 19);
 		free(paths);
+		exit(0);
 	}
 	else if (execve(paths, cmd, env) == -1)
 	{
 		perror("Can't execve");
 		free(paths);
+		exit(0);
 	}
 }

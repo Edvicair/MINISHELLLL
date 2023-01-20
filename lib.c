@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 16:09:39 by edvicair          #+#    #+#             */
-/*   Updated: 2022/12/08 11:49:45 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:42:02 by motaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,18 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-char	*ft_strdup(t_msh *msh, const char *s)
+char	*ft_strdup(const char *s)
 {
 	int		i;
 	int		s_len;
 	char	*s_cpy;
 
-	i = 0;
-	s_len = ft_strlen(s);
-	s_cpy = (char *)malloc(sizeof(char) * s_len + 1);
+	i = -1;
+	s_cpy = (char *)malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!s_cpy)
 		return (NULL);
-	while (s[i])
-	{
+	while (s[++i])
 		s_cpy[i] = s[i];
-		i++;
-	}
 	s_cpy[i] = '\0';
 	return (s_cpy);
 }
