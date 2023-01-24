@@ -6,17 +6,17 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:46:25 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 08:18:57 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/24 06:43:47 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*exec_path(t_msh *msh, char **cmd, char **path)
+static char	*test_path(t_msh *msh, char **cmd, char **path)
 {
 	int		i;
 	char	*tmp;
-	char *path_b;
+	char	*path_b;
 
 	i = 0;
 	while (path[i])
@@ -37,24 +37,32 @@ static char	*exec_path(t_msh *msh, char **cmd, char **path)
 	return (NULL);
 }
 
-void	exec(t_msh *msh, char **cmd, char **env)
-{	
+char	*exec_bis(t_msh *msh, t_env *cpy, char **cmd)
+{
 	char	**path;
 	char	*paths;
-	t_env	*cpy;
 
-	cpy = msh->env;
 	while (cpy->next)
 	{
 		if (!ft_strncmp(cpy->name, "PATH", 5))
 		{
 			path = ft_split(cpy->value, ':');
-			break;
+			break ;
 		}
 		cpy = cpy->next;
 	}
-	paths = exec_path(msh, cmd, path);
+	paths = test_path(msh, cmd, path);
 	ft_free_double(path);
+	return (paths);
+}
+
+void	exec(t_msh *msh, char **cmd, char **env)
+{	
+	char	*paths;
+	t_env	*cpy;
+
+	cpy = msh->env;
+	paths = exec_bis(msh, cpy, cmd);
 	if (paths == NULL)
 	{
 		write(2, "Can't find command\n", 19);

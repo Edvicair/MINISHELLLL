@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 13:07:26 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 07:39:55 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/24 09:26:02 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal)
 	lst_env->name = ft_strdup(name);
 	if (!value)
 		lst_env->value = NULL;
-	else  {
+	else
 		lst_env->value = ft_strdup(value);
-	}
 	if (!egal)
 		lst_env->egal = 0;
 	else

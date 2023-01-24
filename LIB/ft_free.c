@@ -6,58 +6,57 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 04:36:08 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 08:19:55 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:33:43 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-
-void    ft_free_double(char **s)
+void	ft_free_double(char **s)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (s == NULL)
-        return ;
-    while (s[i])
-    {
-        free(s[i]);
-        s[i] = NULL;
-        i++;
-    }
-    free(s);
-    s = NULL;
+	i = 0;
+	if (s == NULL)
+		return ;
+	while (s[i])
+	{
+		free(s[i]);
+		s[i] = NULL;
+		i++;
+	}
+	free(s);
+	s = NULL;
 }
 
-void    ft_free_redir(t_redir *redir)
+void	ft_free_redir(t_redir *redir)
 {
-    t_redir *tmp;
+	t_redir	*tmp;
 
-    while (redir)
-    {
-    	if (redir->feldup)
-            free(redir->feldup);
-        if (redir->next)
-        {
-    		tmp = redir;
-    		redir = redir->next;
-    		free(tmp);
-        }
+	while (redir)
+	{
+		if (redir->feldup)
+			free(redir->feldup);
+		if (redir->next)
+		{
+			tmp = redir;
+			redir = redir->next;
+			free(tmp);
+		}
 		else
-			break;
-    }
-    free(redir);
+			break ;
+	}
+	free(redir);
 	redir = NULL;
 }
 
 void	ft_free_token(t_msh *msh, t_token *token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	while (token)
 	{
-        ft_free_redir(token->redir);
+		ft_free_redir(token->redir);
 		ft_free_double(token->cmd);
 		if (token->next)
 		{
@@ -66,10 +65,10 @@ void	ft_free_token(t_msh *msh, t_token *token)
 			free(tmp);
 		}
 		else
-			break;
+			break ;
 	}
 	free(token);
 	token = NULL;
-    msh->in = 0;
-    msh->out = 1;
+	msh->in = 0;
+	msh->out = 1;
 }

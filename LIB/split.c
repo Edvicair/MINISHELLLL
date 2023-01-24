@@ -6,11 +6,11 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 09:05:29 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/16 04:41:58 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:33:50 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static int	ft_countword(const char *s, char c)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 15:16:14 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/18 20:44:08 by motaouss         ###   ########.fr       */
+/*   Updated: 2023/01/20 20:33:56 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,9 @@ bool	search_egal(char *s)
 	return (1);
 }
 
-void	ft_export_bis(t_msh *msh, bool egal, char **v_global, int i)
+bool	ft_idk(t_env *cpy, char **v_global, bool egal)
 {
-	t_env	*cpy;
-	bool	o;
-
-	o = 0;
-	cpy = msh->env;
-	while (cpy->next)
-	{
-		if (!ft_strncmp(cpy->name, v_global[0], (ft_strlen(v_global[0]) + 1)))
-		{
-			o = 1;
-			if (cpy->value)
-			{
-				free(cpy->value);
-				cpy->value = NULL;
-
-			}
-			if (v_global[1])
-				cpy->value = ft_strdup(v_global[1]);
-			else
-				cpy->value = ft_strdup("");
-			cpy->egal = egal;
-			break ;
-		}
-		cpy = cpy->next;
-	}
-	if (!o && !ft_strncmp(cpy->name, v_global[0], (ft_strlen(v_global[0]) + 1)))
+	if (!ft_strncmp(cpy->name, v_global[0], (ft_strlen(v_global[0]) + 1)))
 	{
 		if (cpy->value)
 		{
@@ -65,9 +40,30 @@ void	ft_export_bis(t_msh *msh, bool egal, char **v_global, int i)
 		else
 			cpy->value = ft_strdup("");
 		cpy->egal = egal;
+		return (1);
 	}
-	else if (!o && cpy->next == NULL)
-		ft_env_add_back(&msh->env, ft_env_new(msh, v_global[0], v_global[1], egal));
+	return (0);
+}
+
+void	ft_export_bis(t_msh *msh, bool egal, char **v_global, int i)
+{
+	t_env	*cpy;
+	bool	o;
+
+	o = 0;
+	cpy = msh->env;
+	while (cpy)
+	{
+		if (ft_idk(cpy, v_global, egal))
+			break ;
+		if (cpy->next)
+			cpy = cpy->next;
+		else
+			break ;
+	}
+	if (!o && cpy->next == NULL)
+		ft_env_add_back(&msh->env, ft_env_new(msh, v_global[0],
+				v_global[1], egal));
 }
 
 void	ft_export(t_msh *msh, char **cmd)

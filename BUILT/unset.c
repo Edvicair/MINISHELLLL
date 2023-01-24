@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 06:30:57 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/13 18:02:13 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/24 06:10:54 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_unset_first(t_msh *msh, t_env *cpy, char **cmd)
 
 void	cut_env(t_env *env, t_env *cut, bool i)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = cut;
 	if (i)
@@ -45,8 +45,11 @@ void	cut_env(t_env *env, t_env *cut, bool i)
 	free(tmp);
 }
 
-int 	ft_unset_bis(t_msh *msh, char **cmd,  t_env *cpy, t_env *cpy_b, int j)
+int	ft_unset_bis(t_msh *msh, char **cmd, t_env *cpy_b, int j)
 {
+	t_env	*cpy;
+
+	cpy = cpy_b->next;
 	if (!ft_strncmp(cpy->name, cmd[j], (ft_strlen(cmd[j]) + 1)))
 	{
 		if (cpy->next)
@@ -57,12 +60,13 @@ int 	ft_unset_bis(t_msh *msh, char **cmd,  t_env *cpy, t_env *cpy_b, int j)
 	}
 	return (0);
 }
+
 void	ft_unset(t_msh *msh, char **cmd)
 {
 	t_env	*cpy;
 	t_env	*cpy_b;
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	j = 0;
 	if (!cmd[1])
@@ -76,7 +80,7 @@ void	ft_unset(t_msh *msh, char **cmd)
 		{
 			cpy_b = cpy;
 			cpy = cpy->next;
-			i = ft_unset_bis(msh, cmd, cpy, cpy_b, j);
+			i = ft_unset_bis(msh, cmd, cpy_b, j);
 		}
 		if (!i && !ft_strncmp(cpy->name, cmd[j], (ft_strlen(cmd[j]) + 1)))
 		{

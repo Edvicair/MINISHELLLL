@@ -6,13 +6,13 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 16:48:51 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 08:39:08 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/24 06:28:55 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	check_option(char **cmd)
+int	check_option(char **cmd)
 {
 	size_t	i;
 
@@ -23,47 +23,39 @@ bool	check_option(char **cmd)
 		{
 			i++;
 			if (!cmd[1][i])
-				return (1);
+				return (2);
 		}
 	}
-	return (0);
+	return (1);
 }
 
-void 	ft_echo_pipe(t_msh *msh, char **cmd, int i, int j, bool res)
+void	ft_echo_pipe(t_msh *msh, char **cmd, int i, int j)
 {
-	char *cmdd;
-	
 	while (cmd[i])
 	{
-		cmdd = cmd[i];
 		if (i > j)
-			printf(" ");
-		write(msh->fd[1], &cmdd, ft_strlen(cmdd));
+			write(msh->fd[1], cmd[i], ft_strlen(cmd[i]));
+		write(msh->fd[1], cmd[i], ft_strlen(cmd[i]));
 		i++;
 	}
-	if (res == 0)
+	if (check_option(cmd) == 1)
 		write(msh->fd[1], "\n", 1);
 }
 
 void	ft_echo(t_msh *msh, char **cmd)
 {
-	int	i;
-	int	j;
-	int fd;
-	bool	res;
+	int		i;
+	int		j;
+	int		fd;
 
 	fd = 1;
 	if (msh->out)
 		fd = msh->out;
-	res = check_option(cmd);
-	if (res == 1)
-		i = 2;
-	else
-		i = 1;
+	i = check_option(cmd);
 	j = i;
 	if (msh->pip)
 	{
-		ft_echo_pipe(msh, cmd, i, j, res);
+		ft_echo_pipe(msh, cmd, i, j);
 		return ;
 	}
 	while (cmd[i])
@@ -73,6 +65,6 @@ void	ft_echo(t_msh *msh, char **cmd)
 		write(fd, cmd[i], ft_strlen(cmd[i]));
 		i++;
 	}
-	if (res == 0)
+	if (check_option(cmd) == 1)
 		write(fd, "\n", 1);
 }

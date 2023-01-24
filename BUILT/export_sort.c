@@ -6,35 +6,60 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 15:01:54 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/18 17:23:59 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 20:24:27 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	aff_export(t_env *export)
+void	ft_write_export(int fd, t_env *export)
+{
+	if (export->value)
+	{
+		write(fd, "declare -x ", ft_strlen("declare -x "));
+		write(fd, export->name, ft_strlen(export->name));
+		write(fd, "=\"", 2);
+		write(fd, export->value, ft_strlen(export->value));
+		write(fd, "\"\n", 2);
+	}
+	else if (!export->egal)
+	{
+		write(fd, "declare -x ", ft_strlen("declare -x "));
+		write(fd, export->name, ft_strlen(export->name));
+		write(fd, "=\"\"\n", 4);
+	}
+	else
+	{
+		write(fd, "declare -x ", ft_strlen("declare -x "));
+		write(fd, export->name, ft_strlen(export->name));
+		write(fd, "\n", 1);
+	}
+}
+
+void	aff_export(t_msh *msh, t_env *export)
 {
 	t_env	*tmp;
+	int		fd;
 
-	while (export->next)
-	{
-		if (export->value)
-			printf("declare -x %s=\"%s\"\n", export->name, export->value);
-		else if (!export->egal)
-			printf("declare -x %s=\"\"\n", export->name);
-		else
-			printf("declare -x %s\n", export->name);
-		tmp = export;
-		export = export->next;
-		free(tmp);
-		tmp = NULL;
-	}
-	if (export->value)
-		printf("declare -x %s=\"%s\"\n", export->name, export->value);
-	else if (!export->egal)
-		printf("declare -x %s=\"\"\n", export->name);
+	if (msh->out != 1)
+		fd = msh->out;
+	if (msh->pip)
+		fd = msh->fd[1];
 	else
-		printf("declare -x %s\n", export->name);
+		fd = 1;
+	while (export)
+	{
+		ft_write_export(fd, export);
+		if (export->next)
+		{
+			tmp = export;
+			export = export->next;
+			free(tmp);
+			tmp = NULL;
+		}
+		else
+			break ;
+	}
 	free(export);
 	export = NULL;
 }
@@ -96,5 +121,5 @@ void	ft_sort_export(t_msh *msh)
 	}
 	if (!search_export(export, a->name))
 		ft_env_add_back(&export, ft_env_new(msh, a->name, a->value, a->egal));
-	aff_export(export);
+	aff_export(msh, export);
 }

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 12:47:57 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 05:28:01 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:19:02 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_export_pwd(t_msh *msh, char *pwd, char *path)
 		if (cpy->next)
 			cpy = cpy->next;
 		else
-			break;
+			break ;
 	}
 }
 
@@ -103,12 +103,12 @@ void	ft_cd_path(t_msh *msh, char **cmd)
 
 void	ft_cd(t_msh *msh, char **cmd)
 {
-	if (cmd[1] == NULL)
+	if (!cmd[1])
 		ft_cd_home(msh);
 	else if (cmd[1] && !ft_strncmp("--", cmd[1], 3))
 		ft_cd_home(msh);
-	else if (cmd[1] && !ft_strncmp("-", cmd[1], 2))
-		ft_cd_old(msh);
-	else if (cmd[1] != NULL)
+	else if (cmd[1])
 		ft_cd_path(msh, cmd);
+	// else if (cmd[1] && !ft_strncmp("-", cmd[1], 2))
+	// 	ft_cd_old(msh);
 }

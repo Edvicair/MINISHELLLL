@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edvicair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/09 13:04:14 by edvicair          #+#    #+#             */
-/*   Updated: 2021/01/09 15:15:54 by edvicair         ###   ########.fr       */
+/*   Created: 2021/01/07 16:46:50 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/20 12:51:47 by motaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_isascii(int c)
+int	ft_isalnum(int c)
 {
-	if (c >= 0 && c <= 127)
+	if (c >= '0' && c <= '9')
+		return (1);
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	if (c >= 'a' && c <= 'z')
 		return (1);
 	return (0);
 }

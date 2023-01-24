@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:22:18 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/11 16:15:16 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/20 21:33:34 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	count(char *str, char c)
 		return (x);
 	while (str[i] && str[i] == c)
 		i++;
-	while (str[i])
+	while (str[i++])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
@@ -35,34 +35,38 @@ static int	count(char *str, char c)
 		}
 		else if ((str[i] == c) && (str[i - 1] != c))
 			x++;
-		i++;
 	}
-	if (str[i - 1] != c)
+	if (str[--i - 1] != c)
 		x++;
 	return (x);
 }
 
-static char	*ft_substr_quote(char *s, int min, int max)
+static char	*ft_substr_quote(char *s, int min, int max, char c)
 {
 	int		i;
 	char	*s2;
 	int		quote;
 
-	s2 = malloc(sizeof(char *) * (strlen_quote(s, min, max)));
-	if (!s2)
-		return (NULL);
-	quote = find_quote(s, min, max);
-	i = 0;
-	while (min < max)
+	if (c == '|')
+		return (ft_substr_pipe(s, min, max));
+	else
 	{
-		while (s[min] == quote)
+		s2 = malloc(sizeof(char) * (strlen_quote(s, min, max)));
+		if (!s2)
+			return (NULL);
+		quote = find_quote(s, min, max);
+		i = 0;
+		while (min < max)
+		{
+			while (s[min] == quote)
+				min++;
+			s2[i] = s[min];
+			i++;
 			min++;
-		s2[i] = s[min];
-		i++;
-		min++;
+		}
+		s2[i] = '\0';
+		return (s2);
 	}
-	s2[i] = '\0';
-	return (s2);
 }
 
 static void	ft_freeze(int n, char **s)
@@ -81,8 +85,7 @@ static	void	boucle(char *str, char **s, char c)
 	int	min;
 
 	i = 0;
-	n = 0;
-	min = 0;
+	n = -1;
 	while (str[i])
 	{
 		while (str[i] == c)
@@ -94,23 +97,19 @@ static	void	boucle(char *str, char **s, char c)
 				i = split_what(str, i, str[i]);
 			i++;
 		}
-		if (n < count(str, c))
+		if (++n < count(str, c))
 		{
-			if (c == '|')
-				s[n] = ft_substr_pipe(str, min, i);
-			else
-				s[n] = ft_substr_quote(str, min, i);
+			s[n] = ft_substr_quote(str, min, i, c);
 			if (s[n] == NULL)
 				ft_freeze(n, s);
-			n++;
 		}
 	}
 }
 
 char	**tokenizator(char *str, char c)
 {
-	char **s;
-	int i;
+	char	**s;
+	int		i;
 
 	if (!str)
 		return (NULL);

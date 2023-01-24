@@ -6,7 +6,7 @@
 #    By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/30 07:30:46 by edvicair          #+#    #+#              #
-#    Updated: 2023/01/20 01:32:39 by edvicair         ###   ########.fr        #
+#    Updated: 2023/01/24 09:42:15 by edvicair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,38 @@ NAME = minishell
 CFLAGS = -Wall -Wextra -Werror -g
 RL = -lreadline
 INC = minishell.h
-SRC = Libft/ft_lstclear.c Libft/ft_lstdelone.c Libft/ft_atoi.c minishell.c lib.c split.c INIT/init_env.c EXEC/redir.c INIT/init_tok.c BUILT/cd.c BUILT/pwd.c BUILT/export.c BUILT/export_sort.c BUILT/env.c BUILT/unset.c BUILT/echo.c BUILT/exit.c ft_free.c PARSING/parsing.c PARSING/tokenizator.c PARSING/utils_parsing.c PARSING/utils_parsing2.c EXEC/child.c EXEC/exec.c INIT/init_redir.c PARSING/syntax.c
+SRC = 	minishell.c \
+		LIB/ft_free.c \
+		LIB/lib.c \
+		LIB/lib_bis.c \
+		LIB/split.c \
+		LIB/ft_isalnum.c \
+		LIB/ft_atoi.c \
+		LIB/ft_itoa.c \
+		INIT/init_env.c \
+		INIT/init_tok.c \
+		INIT/init_redir.c \
+		PARSING/parsing.c \
+		PARSING/utils_parsing.c \
+		PARSING/utils_parsing2.c \
+		PARSING/utils_parsing3.c \
+		PARSING/tokenizator.c \
+		PARSING/syntax.c \
+		PARSING/expand.c \
+		PARSING/sida.c \
+		BUILT/cd.c \
+		BUILT/pwd.c \
+		BUILT/export.c \
+		BUILT/export_sort.c \
+		BUILT/env.c \
+		BUILT/unset.c \
+		BUILT/echo.c \
+		BUILT/exit.c \
+		EXEC/child.c \
+		EXEC/redir.c \
+		EXEC/exec.c \
+		EXEC/built.c
+
 OBJ=$(SRC:%.c=%.o)
 
 all: $(NAME)

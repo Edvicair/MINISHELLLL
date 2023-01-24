@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 20:16:33 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/09 01:37:32 by motaouss         ###   ########.fr       */
+/*   Updated: 2023/01/24 06:02:45 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	split_what(char *str, int i, char quote)
 		i++;
 		while (str[i] != quote && str[i])
 			i++;
-		return(i);
+		return (i);
 	}
 	else
 	{
@@ -34,37 +34,9 @@ int	split_what(char *str, int i, char quote)
 	}
 }
 
-int		is_quote(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '"')
-			i = split_what(str, i, str[i]);
-		if (!str[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	freezer(char **str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-}
-
 int	strlen_quote(char *str, int min, int max)
 {
-	int i;
+	int		i;
 	char	quote;
 
 	i = min;
@@ -84,7 +56,7 @@ int	strlen_quote(char *str, int min, int max)
 	return ((max - min) + 1);
 }
 
-int	find_quote(char *str, int min , int max)
+int	find_quote(char *str, int min, int max)
 {
 	while (min < max)
 	{

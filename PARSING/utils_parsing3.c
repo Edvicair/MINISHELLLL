@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   utils_parsing3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/09 16:58:49 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/12 15:23:50 by edvicair         ###   ########.fr       */
+/*   Created: 2023/01/24 05:58:03 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/24 06:04:04 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
+int	is_quote(char *str)
 {
-	size_t	i;
-	size_t	lensrc;
-	size_t	lendest;
+	int	i;
 
 	i = 0;
-	lensrc = ft_strlen(src);
-	lendest = ft_strlen(dest);
-	if (size <= lendest)
-		lensrc += size;
-	else
-		lensrc += lendest;
-	if (size > lendest)
+	while (str[i])
 	{
-		while (src[i] && (lendest + 1) < size)
-		{
-			dest[lendest] = src[i];
-			i++;
-			lendest++;
-		}
+		if (str[i] == '\'' || str[i] == '"')
+			i = split_what(str, i, str[i]);
+		if (!str[i])
+			return (1);
+		i++;
 	}
-	dest[lendest] = '\0';
-	return (lensrc);
+	return (0);
+}
+
+void	freezer(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
 }

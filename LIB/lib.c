@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   lib.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/07 17:01:14 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/12 15:28:53 by edvicair         ###   ########.fr       */
+/*   Created: 2022/11/12 16:09:39 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/20 11:39:18 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
@@ -34,4 +34,14 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	}
 	buya[i] = '\0';
 	return (buya);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

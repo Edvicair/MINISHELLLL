@@ -1,42 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/09 16:59:20 by edvicair          #+#    #+#             */
-/*   Updated: 2022/11/12 15:22:47 by edvicair         ###   ########.fr       */
+/*   Created: 2021/01/09 15:12:51 by edvicair          #+#    #+#             */
+/*   Updated: 2023/01/20 11:34:46 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+int	ft_atoi(const char *nptr)
 {
-	size_t	i;
-	size_t	lensrc;
+	int	i;
+	int	less;
+	int	nb;
 
 	i = 0;
-	if (!src)
-		return (0);
-	lensrc = ft_strlen(src);
-	if ((lensrc + 1) < size)
+	less = 1;
+	nb = 0;
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
+		i++;
+	if (nptr[i] == 45 || nptr[i] == 43)
 	{
-		while (i < lensrc + 1)
-		{
-			dest[i] = src[i];
-			i++;
-		}
+		if (nptr[i] == 45)
+			less = -less;
+		i++;
 	}
-	else if (size != 0)
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		while (i < size - 1)
-		{
-			dest[i] = src[i];
-			i++;
-		}
-		dest[size - 1] = '\0';
+		nb *= 10;
+		nb += nptr[i] - 48;
+		i++;
 	}
-	return (lensrc);
+	return (nb * less);
 }
