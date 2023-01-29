@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:39:31 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 09:48:12 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:23:11 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	ft_end_cmd(t_msh *msh, int i)
 {
 	close(msh->fd[0]);
 	close(msh->fd[1]);
+	dup2(msh->stin, 0);
+	dup2(msh->stout, 1);
+	close(msh->stin);
+	close(msh->stout);
 	while (i > 0)
 		waitpid(msh->tab[--i], NULL, 0);
-	dup2(msh->stin, 0);
-	close(msh->stin);
 	ft_free_token(msh, msh->token);
 	msh->token = NULL;
 	free(msh->tab);
@@ -40,6 +42,7 @@ int	ft_cmd_bis(t_msh *msh, t_token *cpy, int i)
 			close(msh->fd[0]);
 			close(msh->fd[1]);
 		}
+		unlink_here_doc(msh, cpy);
 		i++;
 	}
 	return (i);
@@ -56,7 +59,10 @@ void	ft_cmd(t_msh *msh)
 	cpy = msh->token;
 	nb = msh->pip;
 	msh->stin = dup(0);
+	msh->stout = dup(1);
 	msh->tab = (int *)malloc(sizeof(int) * (msh->pip + 1));
+	if (!msh->tab)
+		return ;
 	while (msh->pip >= 0 && msh->tab)
 	{
 		if (pipe(msh->fd))

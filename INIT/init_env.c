@@ -6,11 +6,20 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 13:07:26 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 09:26:02 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/29 00:42:01 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*ft_shell_lvl(char *value)
+{
+	int		nb;
+
+	nb = ft_atoi(value);
+	nb += 1;
+	return (ft_itoa(nb));
+}
 
 t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal)
 {
@@ -22,6 +31,8 @@ t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal)
 	lst_env->name = ft_strdup(name);
 	if (!value)
 		lst_env->value = NULL;
+	else if (!ft_strncmp(lst_env->name, "SHLVL", 6))
+		lst_env->value = ft_shell_lvl(value);
 	else
 		lst_env->value = ft_strdup(value);
 	if (!egal)
@@ -74,15 +85,4 @@ t_env	*fill_env(t_msh *msh, char **env)
 		i++;
 	}
 	return (new_env);
-}
-
-void	ft_init_struct(t_msh *msh, char **env)
-{
-	msh->env = fill_env(msh, env);
-	msh->line = NULL;
-	msh->token = NULL;
-	msh->stin = 0;
-	msh->in = 0;
-	msh->out = 1;
-	msh->pip = 0;
 }

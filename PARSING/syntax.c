@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: motaouss <motaouss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 04:21:36 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/20 17:57:07 by motaouss         ###   ########.fr       */
+/*   Updated: 2023/01/29 01:03:26 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ int	pipe_error(char *line)
 	return (0);
 }
 
+bool	redir_error_bis(char *line, int i)
+{
+	if ((line[i] == '>' && line[i + 1] == '<') || (line[i] == '<'
+			&& line[i + 1] == '>') || (line[i + 1] == '>'
+			&& line[i + 2] == '>') || (line[i + 1] == '<'
+			&& line[i + 2] == '<'))
+		return (1);
+	return (0);
+}
+
 int	redir_error(char *line)
 {
 	int	i;
@@ -74,10 +84,7 @@ int	redir_error(char *line)
 		if (line[i] == '>' || line[i] == '<')
 		{
 			j = i;
-			if ((line[i] == '>' && line[i + 1] == '<') || (line[i] == '<'
-					&& line[i + 1] == '>') || (line[i + 1] == '>'
-					&& line[i + 2] == '>') || (line[i + 1] == '<'
-					&& line[i + 2] == '<'))
+			if (redir_error_bis(line, i))
 				return (1);
 			while (line[i + 1] == ' ')
 				i++;

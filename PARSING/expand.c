@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 11:59:16 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/20 20:05:02 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/25 01:44:33 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,11 @@ char	*add_expand(t_msh *msh)
 	char	*word;
 	int		quote;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	quote = 0;
 	msh->line = valeur_retour(msh);
-	while (msh->line[i])
+	while (msh->line[++i])
 	{
 		if (msh->line[i] == '\'' && quote == 0)
 			i = split_what(msh->line, i, msh->line[i]);
@@ -145,7 +145,6 @@ char	*add_expand(t_msh *msh)
 			else
 				msh->line = fill_no_expand(msh, word, i, j);
 		}
-		i++;
 	}
 	return (msh->line);
 }

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:46:25 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 06:43:47 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:44:30 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static char	*test_path(t_msh *msh, char **cmd, char **path)
 	i = 0;
 	while (path[i])
 	{
-		tmp = ft_strjoin(msh, path[i], "/");
-		path_b = ft_strjoin(msh, tmp, cmd[0]);
+		tmp = ft_strjoin(path[i], "/");
+		path_b = ft_strjoin(tmp, cmd[0]);
 		free(tmp);
 		if (access(path_b, X_OK) == 0)
 			return (path_b);
@@ -67,6 +67,7 @@ void	exec(t_msh *msh, char **cmd, char **env)
 	{
 		write(2, "Can't find command\n", 19);
 		free(paths);
+		ft_free_double(env);
 		exit(0);
 	}
 	else if (execve(paths, cmd, env) == -1)

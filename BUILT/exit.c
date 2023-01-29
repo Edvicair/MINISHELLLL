@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 19:12:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 09:48:27 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:23:35 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ void	ft_exit(t_msh *msh, int value)
 		close(msh->fd[0]);
 		close(msh->fd[1]);
 		dup2(msh->stin, 0);
+		dup2(msh->stout, 1);
 		close(msh->stin);
+		close(msh->stout);
 	}
 	if (msh->token)
 		ft_free_token(msh, msh->token);

@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 09:47:59 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/29 01:17:07 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_msh
 	int		pip;
 	int		fd[2];
 	int		stin;
+	int		stout;
 	int		in;
 	int		out;
 	int		*tab;
@@ -86,6 +87,7 @@ void	ft_loc_add_back(t_loc **loc, t_loc *new);
 void	ft_free_token(t_msh *msh, t_token *token);
 t_redir	*redi_less(char *str);
 t_token	*ft_fill_token(t_msh *msh);
+t_env	*fill_env(t_msh *msh, char **env);
 t_env	*ft_env_new(t_msh *msh, char *name, char *value, bool egal);
 t_loc	*ft_loc_last(t_loc *loc);
 t_loc	*ft_loc_new(void *content);
@@ -96,12 +98,14 @@ bool	ft_strshr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_atoi(const char *nptr);
-char	*ft_strjoin(t_msh *msh, char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 void	ft_free_double(char **s);
 void	ft_free_env(t_env *env);
+t_type	ft_choose_type(int R);
+size_t	count_tab(t_env *env);
 
 						//PARSING//
 int		is_quote(char *str);
@@ -119,6 +123,7 @@ int		pipe_error(char *line);
 int		ft_strlen_redir(char *str);
 int		sida_f(int var);
 int		ft_isalnum(int c);
+char	*here_doc(char *word);
 char	**tokenizator(char *str, char c);
 char	*ft_substr2(const char *s, int min, int max);
 char	*space_chips(char *line);
@@ -134,6 +139,7 @@ void	freezer(char **token);
 void	ft_redir_add_back(t_redir **redir, t_redir *new);
 void	sidaction(void);
 void	sidametocosita(int signum);
+void	unlink_here_doc(t_msh *msh, t_token *token);
 void	sida_c(int signum);
 void	sida_d(int signum);
 t_redir	*redi_less(char *str);

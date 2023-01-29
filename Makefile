@@ -6,7 +6,7 @@
 #    By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/30 07:30:46 by edvicair          #+#    #+#              #
-#    Updated: 2023/01/24 09:42:15 by edvicair         ###   ########.fr        #
+#    Updated: 2023/01/29 00:49:50 by edvicair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,12 @@ SRC = 	minishell.c \
 		LIB/ft_free.c \
 		LIB/lib.c \
 		LIB/lib_bis.c \
+		LIB/utils.c \
 		LIB/split.c \
 		LIB/ft_isalnum.c \
 		LIB/ft_atoi.c \
 		LIB/ft_itoa.c \
+		INIT/init_msh.c \
 		INIT/init_env.c \
 		INIT/init_tok.c \
 		INIT/init_redir.c \
@@ -32,6 +34,7 @@ SRC = 	minishell.c \
 		PARSING/tokenizator.c \
 		PARSING/syntax.c \
 		PARSING/expand.c \
+		PARSING/here_doc.c \
 		PARSING/sida.c \
 		BUILT/cd.c \
 		BUILT/pwd.c \

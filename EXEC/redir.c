@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:00:59 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 08:46:02 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/29 00:35:40 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	redir_in(t_redir *redir, t_msh *msh)
 {
-	if (redir->type == RE_G && redir->feldup)
+	if ((redir->type == RE_G || redir->type == H_DOC) && redir->feldup)
 	{
 		if (msh->in != 0)
 			close(msh->in);
@@ -24,14 +24,6 @@ bool	redir_in(t_redir *redir, t_msh *msh)
 			printf("%s: No such file or directory\n", redir->feldup);
 			return (1);
 		}
-	}
-	else if (redir->type == H_DOC && redir->feldup)
-	{
-		if (msh->in != 0)
-			close(msh->in);
-		msh->in = msh->fd[1];
-		//
-		//
 	}
 	return (0);
 }

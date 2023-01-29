@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:38:31 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 11:39:49 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:44:20 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_strdup(const char *s)
 	return (s_cpy);
 }
 
-char	*ft_strjoin(t_msh *msh, char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	i;
 	size_t	j;

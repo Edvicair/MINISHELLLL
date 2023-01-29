@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 20:28:00 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 06:18:05 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/29 00:32:11 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_getenv(t_msh *msh, char *namee)
 	while (cpy->next)
 	{
 		if (!ft_strncmp(cpy->name, namee, ft_strlen(namee)))
-			return (cpy->value);
+			return (ft_strdup(cpy->value));
 		cpy = cpy->next;
 	}
 }
