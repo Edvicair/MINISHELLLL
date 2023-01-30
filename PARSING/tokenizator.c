@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:22:18 by motaouss          #+#    #+#             */
-/*   Updated: 2023/01/20 21:33:34 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:33:23 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ static int	count(char *str, char c)
 	x = 0;
 	if (str[i] == '\0')
 		return (x);
-	while (str[i] && str[i] == c)
-		i++;
-	while (str[i++])
+	i = count_bis(str, c, i, 1);
+	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
@@ -36,7 +35,8 @@ static int	count(char *str, char c)
 		else if ((str[i] == c) && (str[i - 1] != c))
 			x++;
 	}
-	if (str[--i - 1] != c)
+	i = count_bis(str, c, i, 0);
+	if (str[i] != c)
 		x++;
 	return (x);
 }
@@ -49,24 +49,23 @@ static char	*ft_substr_quote(char *s, int min, int max, char c)
 
 	if (c == '|')
 		return (ft_substr_pipe(s, min, max));
-	else
+	s2 = malloc(sizeof(char) * (strlen_quote(s, min, max)));
+	if (!s2)
+		return (NULL);
+	quote = find_quote(s, min, max);
+	if (quote)
+		max--;
+	i = 0;
+	while (min < max)
 	{
-		s2 = malloc(sizeof(char) * (strlen_quote(s, min, max)));
-		if (!s2)
-			return (NULL);
-		quote = find_quote(s, min, max);
-		i = 0;
-		while (min < max)
-		{
-			while (s[min] == quote)
-				min++;
-			s2[i] = s[min];
-			i++;
+		while (s[min] == quote)
 			min++;
-		}
-		s2[i] = '\0';
-		return (s2);
+		s2[i] = s[min];
+		i++;
+		min++;
 	}
+	s2[i] = '\0';
+	return (s2);
 }
 
 static void	ft_freeze(int n, char **s)

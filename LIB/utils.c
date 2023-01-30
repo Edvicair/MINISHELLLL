@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 00:48:15 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/29 01:16:32 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/29 06:36:05 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,25 @@ size_t	count_tab(t_env *env)
 			break ;
 	}
 	return (count);
+}
+
+char	*valeur_retour(t_msh *msh)
+{
+	int		i;
+	char	*ss;
+
+	i = 0;
+	while (msh->line[i])
+	{
+		if (msh->line[i] == '\'')
+			i = split_what(msh->line, i, msh->line[i]);
+		if (msh->line[i] == '$' && msh->line[i + 1] == '?')
+		{
+			ss = "?\0";
+			msh->line = fill_expand(msh, i, (i + 2), ss);
+			return (msh->line);
+		}
+		i++;
+	}
+	return (msh->line);
 }

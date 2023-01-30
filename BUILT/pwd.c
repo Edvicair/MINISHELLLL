@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:21:58 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/20 20:24:45 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:34:54 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	ft_pwd(t_msh *msh)
 
 	fd = 1;
 	pwd = malloc(sizeof(char) * 200);
+	if (!pwd)
+		return ;
 	if (msh->out)
 		fd = msh->out;
-	if (!pwd)
-		printf("error pwd\n");
 	pwd = getcwd(pwd, 200);
 	if (!pwd)
-		printf("error\n");
+		return ;
 	else if (msh->pip)
 	{
 		write(msh->fd[1], pwd, ft_strlen(pwd));

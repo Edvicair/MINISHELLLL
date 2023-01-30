@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:39:31 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/26 17:23:11 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:31:52 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		sidaction();
-		msh.line = readline("minizboub-> ");
+		msh.line = readline("\033[0;35mMinizboub-> \033[0;37m");
 		if (msh.line)
 		{
 			if (parser(&msh))
@@ -101,7 +101,7 @@ int	main(int ac, char **av, char **env)
 		else
 			break ;
 	}
-	if (msh.token)
-		ft_exit_d(&msh, g_value_exit);
+	printf("exit\n");
+	ft_exit(&msh, g_value_exit);
 	return (0);
 }

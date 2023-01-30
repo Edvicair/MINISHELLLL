@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 05:58:03 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/24 06:04:04 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:33:28 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,22 @@ void	freezer(char **str)
 	{
 		free(str[i]);
 		i++;
+	}
+}
+
+int	count_bis(char *str, char c, int i, bool a)
+{
+	if (a == 1)
+	{
+		while (str[i] && str[i] == c)
+			i++;
+		return (i - 1);
+	}
+	else
+	{
+		if (c == ' ')
+			return (i - 1);
+		else
+			return (i - 2);
 	}
 }

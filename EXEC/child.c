@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 11:10:32 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/29 01:18:41 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:37:55 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	one_child(t_msh *msh, t_token *token, int i)
 	signal (SIGQUIT, sida_d);
 	if (token->child == -1)
 	{
-		perror("Can't fork");
+		printf("\033[0;31mCan't fork");
 		exit(0);
 	}
 	if (token->child == 0)

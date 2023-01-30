@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:00:59 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/29 00:35:40 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:35:22 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	redir_in(t_redir *redir, t_msh *msh)
 		msh->in = open(redir->feldup, O_RDONLY);
 		if (msh->in < 0)
 		{
-			printf("%s: No such file or directory\n", redir->feldup);
+			printf("\033[0;31m%s: No such file or directory\n", redir->feldup);
 			return (1);
 		}
 	}
@@ -37,7 +37,7 @@ bool	redir_out(t_redir *redir, t_msh *msh)
 		msh->out = open(redir->feldup, O_CREAT | O_TRUNC | O_WRONLY, 0664);
 		if (msh->out < 0)
 		{
-			printf("can't open %s\n", redir->feldup);
+			printf("\033[0;31mcan't open %s\n", redir->feldup);
 			return (1);
 		}
 	}
@@ -48,7 +48,7 @@ bool	redir_out(t_redir *redir, t_msh *msh)
 		msh->out = open(redir->feldup, O_CREAT | O_APPEND | O_WRONLY, 0664);
 		if (msh->out < 0)
 		{
-			printf("can't open %s\n", redir->feldup);
+			printf("\033[0;31mcan't open %s\n", redir->feldup);
 			return (1);
 		}
 	}

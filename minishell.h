@@ -6,7 +6,7 @@
 /*   By: edvicair <edvicair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 20:43:04 by edvicair          #+#    #+#             */
-/*   Updated: 2023/01/29 01:17:07 by edvicair         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:32:51 by edvicair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int		split_what(char *str, int i, char quote);
 int		find_quote(char *str, int min, int max);
 int		strlen_quote(char *str, int min, int max);
 int		is_pipe(char *str);
+int		count_bis(char *str, char c, int i, bool a);
 int		find_pipe(char *str, int i);
 int		split_quote(char *str, int i, char quote);
 int		redir_error(char *line);
@@ -154,8 +155,7 @@ void	ft_export(t_msh *msh, char **cmd);
 void	ft_sort_export(t_msh *msh);
 void	ft_unset(t_msh *msh, char **cmd);
 void	ft_echo(t_msh *msh, char **cmd);
-void	ft_exit(t_msh *msh, int valu1e);
-void	ft_exit_d(t_msh *msh, int valu1e);
+void	ft_exit(t_msh *msh, int value);
 void	ft_pwd(t_msh *msh);
 void	ft_env(t_msh *msh);
 void	ft_cd(t_msh *msh, char **cmd);
